@@ -1,0 +1,359 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@{
+    ViewData["Title"] = "Dashboard de Reportes";
+}
+
+<div class="container-fluid mt-4">
+
+    <div class="row mb-4">
+        <div class="col">
+            <h2>Dashboard - Reporte de sesiones</h2>
+            <p class="text-muted">Consulta y exporta información en tiempo real.</p>
+        </div>
+    </div>
+
+    <!-- Reportes -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header">
+            Datos de los reportes
+        </div>
+        <div class="card-body">
+            <form method="get">
+                <div class="row">
+
+                    <div id="formSesion" class="col-md-2 mb-3">
+                        <label>Tipo de sesion</label>
+                        <select id="tipoSesion" class="form-select" name="categoria">
+                            <option>Presencial</option>
+                            <option>Webinar</option>
+                        </select>
+                    </div>
+
+                    <div id="formLugar" class="col-md-2 mb-3">
+                        <label>Lugar</label>
+                        <select class="form-select" name="categoria">
+                            <option value="" selected disabled>Seleccionar</option>
+                            <option>Auditorio Evolucion</option>
+                            <option>Auditorio Sam Walton</option>
+                            <option>Sala de Consejo</option>
+                            <option>Sala de Videoconferencia</option>
+                            <option>Videowall</option>
+                            <option>Salon Happiness</option>
+                            <option>Salon Crecer</option>
+                            <option>Sala Internacional</option>
+                            <option>Sala Omnichannel</option>
+                            <option>Sala Agile</option>
+                            <option>Sala Develop Me</option>
+                            <option>Sala Equidad</option>
+                        </select>
+                    </div>
+
+                    <div id="formNumeroDeSesion" class="col-md-2 mb-3">
+                        <label>No. Sesion</label>
+                        <input type="text" class="form-control" name="tema">
+                    </div>
+
+                    <div id="formTema" class="col-md-4 mb-3">
+                        <label>Tema</label>
+                        <input type="text" class="form-control" name="tema">
+                    </div>
+
+                    <div class="col-md-2 mb-3">
+                        <label>No. de participantes</label>
+                        <input type="text" class="form-control" name="participantes" />
+                    </div>
+
+                </div>
+                <div class="row">
+
+                    <div class="col-md-2 mb-3">
+                        <label>Fecha</label>
+                        <input type="date" class="form-control" name="fecha" />
+                    </div>
+
+                    <div class="col-md-2 mb-3">
+                        <label>Anfitrion</label>
+                        <select id="Anfitrion" class="form-select" name="categoria" disabled>
+                            <option>MX - ADE</option>
+                            <option>Usuario</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2 mb-3">
+                        <label>Formato de sesion</label>
+                        <select class="form-select" name="categoria">
+                            <option value="" selected disabled>Seleccionar</option>
+                            <option>Zoom</option>
+                            <option>Teams</option>
+                            <option>Presencial</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2 mb-3">
+                        <label>Requiere reporte</label>
+                        <select class="form-select" name="categoria">
+                            <option value="" selected disabled>Seleccionar</option>
+                            <option>Si requiere</option>
+                            <option>No requiere</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4 mb-3 d-flex align-items-end">
+                        <button class="btn btn-primary w-100">
+                            Agregar
+                        </button>
+                    </div>
+
+                    <div class="col-md-4 mb-3 d-flex align-items-end">
+                        <button class="btn btn-primary w-100" style="display: none;">
+                            Modificar
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Indicadores -->
+    <div class="row mb-4">
+
+        <div class="col-md-3">
+            <div class="card bg-primary text-white shadow">
+                <div class="card-body">
+                    <h6>Eventos de la semana</h6>
+                    <h3>50</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card bg-success text-white shadow">
+                <div class="card-body">
+                    <h6>Eventos presenciales</h6>
+                    <h3>1,254</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card bg-warning text-dark shadow">
+                <div class="card-body">
+                    <h6>Webinars</h6>
+                    <h3>840</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card bg-danger text-white shadow">
+                <div class="card-body">
+                    <h6>Eventos del año</h6>
+                    <h3>18</h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Tabla -->
+    <div class="card shadow-sm">
+        <div class="card-header d-flex justify-content-between">
+            <div>
+                <button class="btn btn-outline-primary btn-sm" id="btnPrev">Anterior</button>
+
+                <span id="nombreSemana">Semana 1</span>
+
+                <button class="btn btn-outline-primary btn-sm" id="btnNext">Siguiente</button>
+            </div>
+
+            <div>
+                <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalSemana">
+                    Nueva semana
+                </button>
+
+                <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalExport">
+                    Exportar Excel
+                </button>
+
+                <!-- Ventana emergente de Exportar reportes -->
+                <div class="modal fade" id="modalExport" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h5 class="modal-title">Exportar reportes</h5>
+                            </div>
+
+                            <div class="modal-body">
+
+                                <form method="get" action="/Reportes/ExportarExcel">
+
+                                    <!-- Tipo de exportación -->
+                                    <div class="mb-3">
+                                        <label>Tipo de exportación</label>
+                                        <select id="tipoExport" name="tipo" class="form-select">
+                                            <option value="semana">Por semana</option>
+                                            <option value="anio">Todo el año</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Semana (solo si aplica) -->
+                                    <div id="campoSemana" class="mb-3">
+                                        <label>Semana</label>
+                                        <input type="number" name="semana" class="form-control" min="1" max="52">
+                                    </div>
+
+                                    <!-- Año -->
+                                    <div class="mb-3">
+                                        <label>Año</label>
+                                        <input type="number" name="anio" class="form-control" value="2026">
+                                    </div>
+
+                                    <button type="submit" class="btn btn-success w-100">
+                                        Exportar Excel
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ventana emergente de Nueva semana -->
+                <div class="modal fade" id="modalSemana" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h5>Crear nueva semana</h5>
+                        </div>
+
+                        <div class="modal-body">
+
+                            <input type="text" id="nombreSemanaInput"
+                                class="form-control"
+                                placeholder="Ej: Semana 05-2026">
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+
+                            <button class="btn btn-success" id="guardarSemana">
+                                Guardar
+                            </button>
+                        </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Tipo de sesion</th>
+                        <th>Sesio / Lugar</th>
+                        <th>Tema</th>
+                        <th>Participantes</th>
+                        <th>Fecha</th>
+                        <th>Anfitrion</th>
+                        <th>Formato</th>
+                        <th>Reporte</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>Webinar</td>
+                        <td>000 000 000 00</td>
+                        <td>All Hands</td>
+                        <td>100</td>
+                        <td>19-06-26</td>
+                        <td>Usuario</td>
+                        <td>Zoom</td>
+                        <td>
+                            <span class="badge bg-success">
+                                Generado
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Webinar</td>
+                        <td>000 000 000 00</td>
+                        <td>All Hands</td>
+                        <td>100</td>
+                        <td>19-06-26</td>
+                        <td>Usuario</td>
+                        <td>Zoom</td>
+                        <td>
+                            <span class="badge bg-warning">
+                                Si requiere
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Webinar</td>
+                        <td>000 000 000 00</td>
+                        <td>All Hands</td>
+                        <td>100</td>
+                        <td>19-06-26</td>
+                        <td>Usuario</td>
+                        <td>Zoom</td>
+                        <td>
+                            <span class="badge bg-primary">
+                                Enviar
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts{
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const formSesion = document.getElementById("formSesion");
+    const tipoSesion = document.getElementById("tipoSesion");
+    const formLugar = document.getElementById("formLugar");
+    const formNumeroDeSesion = document.getElementById("formNumeroDeSesion");
+    const formTema = document.getElementById("formTema");
+    const Anfitrion = document.getElementById("Anfitrion");
+
+    tipoSesion.addEventListener("change", function () {
+
+        if (this.value === "Webinar") {
+            formLugar.style.display = "none";
+            formNumeroDeSesion.className = "col-md-3 mb-3";
+            formTema.className = "col-md-5 mb-3";
+            Anfitrion.value = "Usuario";
+        } else {
+            formLugar.style.display = "block";
+            formNumeroDeSesion.className = "col-md-2 mb-3";
+            formTema.className = "col-md-4 mb-3";
+            Anfitrion.value = "MX - ADE";
+        }
+
+    });
+
+});
+</script>
+}
